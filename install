@@ -1,0 +1,31 @@
+#!/bin/bash
+
+DOTFILES="$HOME/dotfiles"
+STOW_FOLDERS=(
+    ghostty
+    git
+    #nvim
+    tmux
+    # vscode
+    zsh
+)
+
+if [ ! "$HOME/.oh-my-zsh" ]; then
+    echo "Installing oh-my-zsh"
+    ZSH="$HOME/.oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    echo "oh-my-zsh installed"
+else
+    echo "oh-my-zsh already installed"
+fi
+
+pushd $DOTFILES
+
+for folder in "${STOW_FOLDERS[@]}"; do
+    echo "Stowing $folder"
+    stow -D $folder
+    stow -t ~ $folder
+done
+
+popd
+
+echo "Dotfiles instalation complete"

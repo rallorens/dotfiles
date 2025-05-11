@@ -1,5 +1,5 @@
 # First set Oh My Zsh configurations
-export ZSH="$HOME/.config/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 CASE_SENSITIVE="true"
