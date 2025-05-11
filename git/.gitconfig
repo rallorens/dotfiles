@@ -1,0 +1,26 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	editor = nvim
+[pull]
+	rebase = false
+[alias]
+	co = checkout
+	br = branch
+	cm = commit -m
+	st = status -sb
+	p = push
+	ll = log --oneline
+	last = log -1 HEAD --stat
+	gl = config --global -l
+	cb = checkout -b
+	sw = switch
+[credential]
+	helper = store
+[init]
+	deafaultBranch = master
+
+[includeIf "gitdir:~/work/"]
+    path = ~/.config/git/.gitconfig-work
+
+[includeIf "gitdir:~"]
+    path = ~/.config/git/.gitconfig-personal

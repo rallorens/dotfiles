@@ -1,0 +1,9 @@
+# https://ghostty.org/docs/config/reference
+#
+theme = Github-Dark-Default
+font-size = 16
+cursor-style = block
+adjust-cell-height = 15%
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
+shell-integration-features = no-cursor,no-sudo,no-title
