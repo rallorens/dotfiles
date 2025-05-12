@@ -19,6 +19,7 @@ alias g=git
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"
 alias tms="~/.local/scripts/tmux-sessionizer"
+alias dotFilesInstall="~/personal/.dotfiles/install"
 
 _zoxide_init() {
   eval "$(zoxide init zsh)"
