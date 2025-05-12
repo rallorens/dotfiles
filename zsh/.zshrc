@@ -67,7 +67,7 @@ lazy_load 'nvm exec 14 node $HOME/aws-azure-login/lib/index.js' aws-azure-login
 _deferred_setup() {
   # FZF (moved to deferred loading)
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  
+  # Other slow loading here
 }
 
 {
