@@ -5,7 +5,7 @@ DISABLE_AUTO_TITLE="true"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+zstyle ':omz:update' mode reminder 
 
 set -o vi
 autoload -U compinit; compinit
@@ -19,17 +19,6 @@ alias g=git
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"
 alias tms="~/.local/scripts/tmux-sessionizer"
-
-lazy_load() {
-  local load_cmd=$1
-  local lazy_cmd=$2
-  
-  eval "$lazy_cmd() { 
-    unfunction $lazy_cmd
-    eval \"$load_cmd\"
-    $lazy_cmd \$@
-  }"
-}
 
 _zoxide_init() {
   eval "$(zoxide init zsh)"
@@ -62,12 +51,18 @@ aws-sso-login() {
   aws sso login --profile "$SELECTED_PROFILE"
 }
 
-lazy_load 'nvm exec 14 node $HOME/aws-azure-login/lib/index.js' aws-azure-login
+# TODO: nvm not installed
+function aws-azure-login() {
+  if ! type nvm &>/dev/null; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  fi
+  
+  nvm exec 14 node "$HOME/aws-azure-login/lib/index.js" "$@"
+}
 
 _deferred_setup() {
-  # FZF (moved to deferred loading)
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  # Other slow loading here
 }
 
 {
