@@ -1,55 +1,48 @@
-# First set Oh My Zsh configurations
-export ZSH="$HOME/.oh-my-zsh"
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
-
+plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
-export CLICOLOR=1
-export LESS="-R -i -g -c -W"
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-export PATH=$HOME/bin:$PATH
-export GOPATH="$HOME/go"
-export PATH=$PATH:$GOPATH/bin
-export PATH="$PATH:/Users/rllorens/work"
-
-autoload -U compinit; compinit
-
 set -o vi
-
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-plugins=(git)
+autoload -U compinit; compinit
 
 alias zshconfig="vim ~/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
-alias tmuxconf="vim ~/.config/tmux/.tmux.conf"
+alias tmuxconf="vim ~/.tmux.conf"
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
-# alias v=nvim
 alias v=vim
 alias g=git
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"
-# AWS Azure login alias (consider moving to a separate file for work-specific configs)
-alias "aws-azure-login=nvm exec 14 node $HOME/aws-azure-login/lib/index.js"
+alias tms="~/.local/scripts/tmux-sessionizer"
 
-# zoxide
-eval "$(zoxide init zsh)"
+lazy_load() {
+  local load_cmd=$1
+  local lazy_cmd=$2
+  
+  eval "$lazy_cmd() { 
+    unfunction $lazy_cmd
+    eval \"$load_cmd\"
+    $lazy_cmd \$@
+  }"
+}
 
-# Kubectl completion
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+_zoxide_init() {
+  eval "$(zoxide init zsh)"
+  cd .
+}
+precmd_functions+=(_zoxide_init)
 
-# FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+function kubectl() {
+  if ! type __start_kubectl >/dev/null 2>&1; then
+    source <(command kubectl completion zsh)
+  fi
+  command kubectl "$@"
+}
 
 venv() {
   if [ $# -eq 0 ]; then
@@ -68,3 +61,16 @@ aws-sso-login() {
   export AWS_PROFILE="$SELECTED_PROFILE"
   aws sso login --profile "$SELECTED_PROFILE"
 }
+
+lazy_load 'nvm exec 14 node $HOME/aws-azure-login/lib/index.js' aws-azure-login
+
+_deferred_setup() {
+  # FZF (moved to deferred loading)
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  
+}
+
+{
+  sleep 0.5
+  _deferred_setup
+} &!
