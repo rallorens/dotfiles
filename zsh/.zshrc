@@ -22,19 +22,20 @@ autoload -U compinit; compinit
 
 set -o vi
 
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
 
 plugins=(git)
 
-alias zshconfig="nvim ~/.zshrc"
-alias ohmyzsh="nvim ~/.oh-my-zsh"
-alias tmuxconf="nvim ~/.config/tmux/.tmux.conf"
+alias zshconfig="vim ~/.zshrc"
+alias ohmyzsh="vim ~/.oh-my-zsh"
+alias tmuxconf="vim ~/.config/tmux/.tmux.conf"
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
-alias v=nvim
+# alias v=nvim
+alias v=vim
 alias g=git
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"

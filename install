@@ -1,12 +1,15 @@
 #!/bin/bash
 
-DOTFILES="$HOME/dotfiles"
+DOTFILES="$HOME/personal/.dotfiles"
 STOW_FOLDERS=(
+    bin
     ghostty
     git
     #nvim
+    python
     tmux
-    # vscode
+    vim
+    #vscode
     zsh
 )
 
