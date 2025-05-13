@@ -17,6 +17,7 @@ path_prepend() {
     fi
 }
 
+# Setup Homebrew (this adds homebrew paths automatically)
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -27,8 +28,6 @@ export GOPATH="$HOME/go"
 path_prepend "/usr/local/bin"
 path_prepend "/opt/homebrew/opt/openjdk@17/bin"
 path_prepend "$HOME/bin"                         
-path_prepend "/opt/homebrew/bin"
-path_prepend "/opt/homebrew/sbin"
 
 path_append "$HOME/.local/scripts"
 path_append "$GOPATH/bin"                       

@@ -62,11 +62,4 @@ function aws-azure-login() {
   nvm exec 14 node "$HOME/aws-azure-login/lib/index.js" "$@"
 }
 
-_deferred_setup() {
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-}
-
-{
-  sleep 0.5
-  _deferred_setup
-} &!
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
