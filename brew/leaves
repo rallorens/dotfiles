@@ -3,6 +3,7 @@ awscli
 azure-cli
 bash
 bat
+btop
 coreutils
 docker
 docker-buildx
@@ -20,15 +21,17 @@ gts
 htop
 jq
 kubernetes-cli
+lazygit
 librsvg
 libtool
 maven
 md5sha1sum
 neovim
+node
 oauth2c
 openjdk@17
 packer
-python@3.11
+podman
 qemu
 rust
 sops

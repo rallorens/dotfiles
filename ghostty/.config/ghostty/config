@@ -1,7 +1,7 @@
 # https://ghostty.org/docs/config/reference
 
-theme = Github-Dark-Default
-font-size = 12
+theme = "iTerm2 Default"
+font-size = 14
 cursor-style = block
 adjust-cell-height = 15%
 mouse-hide-while-typing = true

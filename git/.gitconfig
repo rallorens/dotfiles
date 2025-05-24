@@ -24,3 +24,6 @@
 
 [includeIf "gitdir:~"]
     path = ~/.config/git/.gitconfig-personal
+[user]
+	email = rllorens@aligntech.com
+	name = Rafa

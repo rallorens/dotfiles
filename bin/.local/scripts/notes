@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+
+# Script para gestionar notas diarias en Markdown
+NOTES_DIR="$HOME/Notes/Journal/Daily"
+TODAY=$(date +"%Y-%m-%d")
+NOTE_FILE="$NOTES_DIR/$TODAY.md"
+SESSION_NAME="daily_notes"
+
+# Función para abrir la nota en vim, ya sea en un pane de tmux o directamente
+open_note_in_vim() {
+    local target_session=$1
+    local is_direct=${2:-false}
+    
+    # Verificar si hay vim en ejecución en la sesión
+    local vim_running=""
+    if [[ "$is_direct" == "false" ]]; then
+        vim_running=$(tmux list-panes -t "$target_session" -F '#{pane_current_command}' | grep -i "vim")
+    fi
+    
+    if [[ -n $vim_running ]]; then
+        # Si vim está en ejecución, guardar cambios y abrir la nueva nota
+        tmux send-keys -t "$target_session" ":wa" C-m
+        tmux send-keys -t "$target_session" ":e $NOTE_FILE" C-m
+    else
+        # No hay vim en ejecución, iniciar vim con el archivo
+        if [[ "$is_direct" == "true" ]]; then
+            tmux send-keys "vim $NOTE_FILE" C-m
+        else
+            tmux send-keys -t "$target_session" "vim $NOTE_FILE" C-m
+        fi
+    fi
+}
+
+# Asegurarse de que el directorio de notas existe
+if [ ! -d "$NOTES_DIR" ]; then
+    mkdir -p "$NOTES_DIR"
+    echo "Se ha creado el directorio $NOTES_DIR"
+fi
+
+# Crear la nota del día si no existe
+if [ ! -f "$NOTE_FILE" ]; then
+    CURRENT_DATE=$(date +"%d/%m/%Y")
+    TEMPLATE_FILE="$HOME/Notes/Templates/Daily.md"
+    if [ -f "$TEMPLATE_FILE" ]; then
+        cp "$TEMPLATE_FILE" "$NOTE_FILE"
+        sed -i "" "s/{{date}}/$CURRENT_DATE/g" "$NOTE_FILE"
+    else
+        echo "Error: No se encontró la plantilla en $TEMPLATE_FILE"
+        exit 1
+    fi
+fi
+
+# Ruta al script tmux-sessionizer
+if [ -x "$HOME/.local/scripts/tmux-sessionizer" ]; then
+    SESSIONIZER="$HOME/.local/scripts/tmux-sessionizer"
+else
+    echo "Error: No se pudo encontrar el script tmux-sessionizer en ~/.local/scripts/"
+    exit 1
+fi
+
+# Verificar si tmux está en ejecución
+tmux_running=$(pgrep tmux || echo "")
+
+if [[ -z $tmux_running ]]; then
+    if command -v vim &> /dev/null; then
+        vim "$NOTE_FILE"
+    else
+        echo "Vim no está instalado. Por favor, instala vim o modifica este script para usar otro editor."
+        exit 1
+    fi
+else
+    notes_session=$(basename "$NOTES_DIR" | tr . _)
+    
+    if [[ -n $TMUX ]] && [[ "$(tmux display-message -p '#S')" == "$notes_session" ]]; then
+        open_note_in_vim "$notes_session" "true"
+    else
+        $SESSIONIZER "$NOTES_DIR"
+        sleep 0.5
+        open_note_in_vim "$notes_session"
+    fi
+fi
+
+# Nota: Si quieres abrir la nota con Obsidian desde el terminal, puedes usar alguno de estos métodos:
+# 1. Usando el comando 'open': open -a Obsidian "$NOTE_FILE"
+# 2. Usando el esquema URI de Obsidian (reemplaza NOMBRE_DEL_VAULT por el nombre de tu bóveda):
+#    open "obsidian://open?vault=NOMBRE_DEL_VAULT&file=$TODAY.md"
