@@ -1,37 +1,39 @@
-source $ZSH/oh-my-zsh.sh
+export ZSH="$HOME/.oh-my-zsh"
+
 ZSH_THEME="simple"
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_UPDATE="true"
 plugins=(git)
 
 zstyle ':omz:update' mode reminder 
 
 set -o vi
-autoload -U compinit; compinit
 
-export ZSH="$HOME/.oh-my-zsh"
+autoload -U compinit
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
+
 export CLICOLOR=1
 export LESS="-R -i -g -c -W"
 export GOPATH="$HOME/go"
 export EDITOR='vim'
+# Exposing Docker-compatible API so existing Docker tools/scripts work unchanged.
+export DOCKER_HOST="unix://$HOME/.local/share/containers/podman/machine/podman-machine-default/podman.sock"
 
-alias zshconfig="vim ~/.zshrc"
-alias ohmyzsh="vim ~/.oh-my-zsh"
-alias tmuxconf="vim ~/.tmux.conf"
+source $ZSH/oh-my-zsh.sh
+
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 alias v=vim
 alias g=git
+alias k="kubectl"
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"
 alias tms="~/.local/scripts/tmux-sessionizer"
 alias dotFilesInstall="~/personal/.dotfiles/install"
-
-_zoxide_init() {
-  eval "$(zoxide init zsh)"
-  cd .
-}
-precmd_functions+=(_zoxide_init)
+alias docker="podman"
 
 function kubectl() {
   if ! type __start_kubectl >/dev/null 2>&1; then
