@@ -5,10 +5,8 @@ bash
 bat
 btop
 coreutils
-docker
 docker-buildx
 docker-compose
-docker-machine
 eksctl
 fluxcd/tap/flux
 fzf
@@ -42,4 +40,3 @@ vim
 watch
 wget
 xclip
-zoxide
