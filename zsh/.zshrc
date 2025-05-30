@@ -32,6 +32,7 @@ alias k="kubectl"
 alias b="bat --paging=never --style='header,grid'"
 alias activate="source venv/bin/activate"
 alias tms="~/.local/scripts/tmux-sessionizer"
+alias aws-sso-login="~/.local/scripts/aws-sso-login"
 alias dotFilesInstall="~/personal/.dotfiles/install"
 alias docker="podman"
 
@@ -51,14 +52,6 @@ venv() {
   fi
 }
 
-aws-sso-login() {
-  PATTERN=${1}
-  SELECTED_PROFILE=$(cat ~/.aws/config | awk '/^\[profile/ { gsub(/^\[profile |\]$/, ""); print }' \
-    | grep -v '^default$' \
-    | fzf-tmux --height 30% --reverse -1 -0 --header 'Select AWS profile' --query "$PATTERN")
-  export AWS_PROFILE="$SELECTED_PROFILE"
-  aws sso login --profile "$SELECTED_PROFILE"
-}
 
 # TODO: nvm not installed
 function aws-azure-login() {

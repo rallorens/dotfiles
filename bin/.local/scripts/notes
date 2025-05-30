@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Script para gestionar notas diarias en Markdown
-NOTES_DIR="$HOME/Notes/Journal/Daily"
+NOTES_DIR="$HOME/personal/notes/Journal/Daily"
 TODAY=$(date +"%Y-%m-%d")
 NOTE_FILE="$NOTES_DIR/$TODAY.md"
 SESSION_NAME="daily_notes"
@@ -40,7 +40,7 @@ fi
 # Crear la nota del día si no existe
 if [ ! -f "$NOTE_FILE" ]; then
     CURRENT_DATE=$(date +"%d/%m/%Y")
-    TEMPLATE_FILE="$HOME/Notes/Templates/Daily.md"
+    TEMPLATE_FILE="$HOME/personal/notes/Templates/Daily.md"
     if [ -f "$TEMPLATE_FILE" ]; then
         cp "$TEMPLATE_FILE" "$NOTE_FILE"
         sed -i "" "s/{{date}}/$CURRENT_DATE/g" "$NOTE_FILE"

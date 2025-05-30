@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+PATTERN=${1}
+SELECTED_PROFILE=$(grep -E '^\[profile ' ~/.aws/config | \
+  sed 's/^\[profile //; s/\]$//' | \
+  grep -v '^default$' | \
+  sort | \
+  uniq | \
+  fzf --height 50% --reverse --header 'Select AWS profile' --query "$PATTERN")
+
+if [[ -z "$SELECTED_PROFILE" ]]; then
+  echo "No profile selected"
+  exit 1
+fi
+
+export AWS_PROFILE="$SELECTED_PROFILE"
+aws sso login --profile "$SELECTED_PROFILE"
