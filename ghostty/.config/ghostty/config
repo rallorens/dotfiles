@@ -1,6 +1,7 @@
 # https://ghostty.org/docs/config/reference
 
-theme = "iTerm2 Default"
+theme = "Popping and Locking"
+#theme = GruvboxDarkHard
 font-size = 14
 cursor-style = block
 adjust-cell-height = 15%
