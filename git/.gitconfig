@@ -18,10 +18,8 @@
 	helper = store
 [init]
 	deafaultBranch = master
-
 [includeIf "gitdir:~/work/"]
     path = ~/.config/git/.gitconfig-work
-
 [includeIf "gitdir:~"]
     path = ~/.config/git/.gitconfig-personal
 [user]
